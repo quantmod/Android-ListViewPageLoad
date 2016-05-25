@@ -34,33 +34,34 @@ public class MainActivity extends Activity {
         
         data.addAll(DataService.getData(0, 20));        
         adapter = new ArrayAdapter<String>(this, R.layout.listview_item, R.id.textView, data);
-        listView.addFooterView(footer);//Ìí¼ÓÒ³½Å(·ÅÔÚListView×îºó)
+         //è¯¥æ–¹æ³•éœ€åœ¨setAdapterä¹‹å‰è°ƒç”¨æ‰èƒ½åŒ…è£…æˆå¸¦æœ‰é¡µè„šçš„Adapter
+        listView.addFooterView(footer);//æ·»åŠ é¡µè„š(æ”¾åœ¨ListViewæœ€å)
         listView.setAdapter(adapter);
         listView.removeFooterView(footer);
     }
     
-    private int number = 20;//Ã¿´Î»ñÈ¡¶àÉÙÌõÊı¾İ
-    private int maxpage = 5;//×Ü¹²ÓĞ¶àÉÙÒ³
+    private int number = 20;//æ¯æ¬¡è·å–å¤šå°‘æ¡æ•°æ®
+    private int maxpage = 5;//æ€»å…±æœ‰å¤šå°‘é¡µ
     private boolean loadfinish = true;
     private final class ScrollListener implements OnScrollListener{
     	
-    	//scrollState=0,1,2ÈıÖÖ×´Ì¬
+    	//scrollState=0,1,2ä¸‰ç§çŠ¶æ€
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			Log.i("MainActivity", "onScrollStateChanged(scrollState="+ scrollState+ ")");
 		}
 		
-		// totalItemCount   ±íÊ¾ListViewÖĞÒÑ×°ÔØµÄÊı¾İ
+		// totalItemCount   è¡¨ç¤ºListViewä¸­å·²è£…è½½çš„æ•°æ®
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			Log.i("MainActivity", "onScroll(firstVisibleItem="+ firstVisibleItem+ ",visibleItemCount="+
 					visibleItemCount+ ",totalItemCount="+ totalItemCount+ ")");
 			
 			final int loadtotal = totalItemCount;
-			int lastItemid = listView.getLastVisiblePosition();//»ñÈ¡µ±Ç°ÆÁÄ»×îºóItemµÄID
-			if((lastItemid+1) == totalItemCount){//´ïµ½Êı¾İµÄ×îºóÒ»Ìõ¼ÇÂ¼
+			int lastItemid = listView.getLastVisiblePosition();//è·å–å½“å‰å±å¹•æœ€åItemçš„ID
+			if((lastItemid+1) == totalItemCount){//è¾¾åˆ°æ•°æ®çš„æœ€åä¸€æ¡è®°å½•
 				if(totalItemCount > 0){
-					//µ±Ç°Ò³
+					//å½“å‰é¡µ
 					int currentpage = totalItemCount%number == 0 ? totalItemCount/number : totalItemCount/number+1;
-					int nextpage = currentpage + 1;//ÏÂÒ»Ò³
+					int nextpage = currentpage + 1;//ä¸‹ä¸€é¡µ
 					if(nextpage <= maxpage && loadfinish){
 						loadfinish = false;
 						listView.addFooterView(footer);
@@ -86,8 +87,8 @@ public class MainActivity extends Activity {
     Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
 			data.addAll((List<String>) msg.obj);
-			adapter.notifyDataSetChanged();//¸æËßListViewÊı¾İÒÑ¾­·¢Éú¸Ä±ä£¬ÒªÇóListView¸üĞÂ½çÃæÏÔÊ¾
-			//ListView.getFooterViewsCount(),·µ»Ø0±íÊ¾Ã»ÓĞfooterView ´óÓÚ0±íÊ¾ÓĞ
+			adapter.notifyDataSetChanged();//å‘Šè¯‰ListViewæ•°æ®å·²ç»å‘ç”Ÿæ”¹å˜ï¼Œè¦æ±‚ListViewæ›´æ–°ç•Œé¢æ˜¾ç¤º
+			//ListView.getFooterViewsCount(),è¿”å›0è¡¨ç¤ºæ²¡æœ‰footerView å¤§äº0è¡¨ç¤ºæœ‰
 			if(listView.getFooterViewsCount() > 0) listView.removeFooterView(footer);
 			loadfinish = true;
 		}    	
